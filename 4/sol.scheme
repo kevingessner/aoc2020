@@ -4,15 +4,44 @@
 
 (letrec (
     (lines (read-all (current-input-port) (lambda (s) (read-line s #\newline))))
+    (all-true? (lambda (l) (fold (lambda (a b) (and a b)) #t l)))
+    (valid-key-value?
+        (lambda (k v)
+            (cond
+                ((equal? k "byr") (let (
+                    (yr (string->number v))
+                ) (and (<= 1920 yr) (>= 2002 yr))))
+                ((equal? k "iyr") (let (
+                    (yr (string->number v))
+                ) (and (<= 2010 yr) (>= 2020 yr))))
+                ((equal? k "eyr") (let (
+                    (yr (string->number v))
+                ) (and (<= 2020 yr) (>= 2030 yr))))
+                ((equal? k "hgt") (let* (
+                    (len (string-length v))
+                    (unit (substring v (- len 2) len))
+                    (val (string->number (substring v 0 (- len 2))))
+                ) (cond
+                    ((equal? unit "cm") (and (<= 150 val) (>= 193 val)))
+                    ((equal? unit "in") (and (<= 59 val) (>= 76 val)))
+                    (#t #f))))
+                ((equal? k "hcl") (and
+                    (equal? "#" (substring v 0 1))
+                    (all-true? (map (lambda (ch) (or (char-lower-case? ch) (char-numeric? ch))) (string->list (substring v 1 7))))
+                ))
+                ((equal? k "ecl") (member v '("amb" "blu" "brn" "gry" "grn" "hzl" "oth")))
+                ((equal? k "pid") (and
+                    (equal? (string-length v) 9)
+                    (all-true? (map char-numeric? (string->list v)))))
+                (else #t)
+            )))
     (handle-line (lambda (line lines found-keys count)
         (if (null? lines)
             count
             (if (string=? line "")
                 ; empty line separates records, so check the record
                 (let (
-                    (good? (fold
-                        (lambda (a b) (and a b))
-                        #t
+                    (good? (all-true?
                         (map
                             (lambda (key) (table-ref found-keys key #f))
                             '("byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"))))
@@ -30,11 +59,13 @@
                     (words (call-with-input-string line (lambda (l) (read-all l (lambda (s) (read-line s #\ ))))))
                 )
                     (for-each (lambda (word)
-                        (let (
-                            ; take the key, ignore the value
+                        (letrec (
                             (key (substring word 0 3))
+                            (value (substring word 4 (string-length word)))
                         )
-                        (table-set! found-keys key #t))) words)
+                        (display word)
+                        (display " ")
+                        (table-set! found-keys key (valid-key-value? key value)))) words)
                     (handle-line (car lines) (cdr lines) found-keys count)
                 )
             )
