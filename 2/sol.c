@@ -12,19 +12,13 @@ int main() {
     while ((line = strsep(&prob, "\n")) != NULL) {
         printf("line %s\n", line);
         char 
-            *min = strsep(&line, "-"),
-            *max = strsep(&line, " "),
+            *i1 = strsep(&line, "-"),
+            *i2 = strsep(&line, " "),
             letter = line[0],
             *pw = line + 3;
-        printf("min %d, max %d letter %c in %s\n", atoi(min), atoi(max), letter, pw);
+        printf("i1 %d, i2 %d letter %c in %s\n", atoi(i1), atoi(i2), letter, pw);
 
-        int found = 0;
-        for (int i = 0; i < strlen(pw); i++) {
-            if (pw[i] == letter) found++;
-        }
-
-        printf("found %d %c\n", found, letter);
-        if (atoi(min) <= found && found <= atoi(max)) {
+        if ((pw[atoi(i1) - 1] == letter) ^ (pw[atoi(i2) - 1] == letter)) {
             good++;
             printf("GOOD\n");
         } else {
