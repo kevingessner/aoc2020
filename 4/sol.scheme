@@ -1,0 +1,45 @@
+#!/usr/local/Cellar/gambit-scheme/4.9.3_2/current/bin/gsi
+
+; gambit scheme
+
+(letrec (
+    (lines (read-all (current-input-port) (lambda (s) (read-line s #\newline))))
+    (handle-line (lambda (line lines found-keys count)
+        (if (null? lines)
+            count
+            (if (string=? line "")
+                ; empty line separates records, so check the record
+                (let (
+                    (good? (fold
+                        (lambda (a b) (and a b))
+                        #t
+                        (map
+                            (lambda (key) (table-ref found-keys key #f))
+                            '("byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"))))
+                )
+                    (display "done")
+                    (display (table->list found-keys))
+                    (display good?)
+                    (display #\newline)
+                    (display #\newline)
+                    (handle-line (car lines) (cdr lines) (make-table) (if good? (+ count 1) count))
+                )
+                ; not an empty line, continue the previous record
+                (let (
+                    ; split the line by spaces
+                    (words (call-with-input-string line (lambda (l) (read-all l (lambda (s) (read-line s #\ ))))))
+                )
+                    (for-each (lambda (word)
+                        (let (
+                            ; take the key, ignore the value
+                            (key (substring word 0 3))
+                        )
+                        (table-set! found-keys key #t))) words)
+                    (handle-line (car lines) (cdr lines) found-keys count)
+                )
+            )
+        )
+    ))
+)
+    (display (handle-line (car lines) (cdr lines) (make-table) 0))
+)
