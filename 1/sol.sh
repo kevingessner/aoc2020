@@ -12,11 +12,14 @@ for i in "${nums[@]}"
 do
     for j in "${nums[@]}"
     do
-        if [[ 2020 -eq $(( i + j )) ]]
-        then
-            echo "$i + $j = 2020"
-            echo "$i x $j = $(( i * j ))"
-            exit
-        fi
+        for k in "${nums[@]}"
+        do
+            if [[ 2020 -eq $(( i + j + k )) ]]
+            then
+                echo "$i + $j + $k = 2020"
+                echo "$i x $j x $k = $(( i * j * k ))"
+                exit
+            fi
+        done
     done
 done
