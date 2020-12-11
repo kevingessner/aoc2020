@@ -1,0 +1,25 @@
+- Day 1: Bash
+- Day 2: C
+- Day 3: Python3
+- Day 4: Scheme (Gambit)
+- Day 5: Perl
+- Day 6: Vimscript
+- Day 7: Basic
+- Day 8: Google Sheets
+- Day 9: Haskell
+- Day 10: SQL (sqlite3)
+- Day 11:
+- Day 12:
+- Day 13:
+- Day 14:
+- Day 15:
+- Day 16:
+- Day 17:
+- Day 18:
+- Day 19:
+- Day 20:
+- Day 21:
+- Day 22:
+- Day 23:
+- Day 24:
+- Day 25:
