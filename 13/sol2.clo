@@ -1,0 +1,49 @@
+(ns aoc2020
+    (:require [clojure.string :as str]))
+
+    ;; test data
+    (def BUSES "7,13,x,x,59,x,31,19") ;; expect 1068781
+    ;;(def BUSES "67,7,59,61") ;; expect 754018
+    (def BUSES "1789,37,47,1889") ;; expect 1202161486
+    ;; problem data
+    (def BUSES "13,x,x,41,x,x,x,x,x,x,x,x,x,641,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,x,17,x,x,x,x,x,x,x,x,x,x,x,29,x,661,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,23")
+
+    (def times (apply vector (map read-string (str/split BUSES #","))))
+
+    ;; finds `A` such that `A == e mod p` and `A == x mod n`/`A == n + N*x` for some N
+    (defn next-mod [n p e x]
+    (do (println "next-mod" n p e x)
+    (loop [i n]
+    (if
+        (== (mod i p) e)
+        i
+        (recur (+ i x))))))
+
+    (println
+    ;;(next-mod 0 1789 0 1)
+    ;;(next-mod 1789 37 36 1789)
+    ;;(next-mod 30413 47 45 (* 37 1789))
+    ;;(next-mod 1288080 1889 1886 (* 1789 37 47))
+    ;;(next-mod 8346 19 25 13)
+
+    (reduce
+        (fn [acc j]
+            (let [val (get times j)
+                  ;; modular residue we're looking for: the value less its index, except for the first value (which should be mod 0)
+                  emod (cond
+                      (not (number? val)) 0
+                      ;; for
+                      (== j 0) 0
+                      :else (- val j))]
+                (if (number? val)
+                    (next-mod
+                        acc
+                        val
+                        ;; make negative residues positive, since (mod) is always positive
+                        (loop [e emod] (if (< e 0) (recur (+ e val)) e))
+                        (apply * (filter number? (subvec times 0 j))))
+                    acc)))
+        0
+        (range (count times))
+        )
+    )
