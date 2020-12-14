@@ -8,9 +8,9 @@
 - Day 8: Google Sheets
 - Day 9: Haskell
 - Day 10: SQL (sqlite3)
-- Day 11:
-- Day 12:
-- Day 13:
+- Day 11: R
+- Day 12: Lua
+- Day 13: Clojure
 - Day 14:
 - Day 15:
 - Day 16:
