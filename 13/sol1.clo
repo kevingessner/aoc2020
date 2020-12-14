@@ -1,0 +1,20 @@
+(ns aoc2020
+    (:require [clojure.string :as str]))
+
+    ;; test data
+    ;;(def MINTIME 939)
+    ;;(def BUSES "7,13,x,x,59,x,31,19")
+    ;; problem data
+    (def MINTIME 1006697)
+    (def BUSES "13,x,x,41,x,x,x,x,x,x,x,x,x,641,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,x,17,x,x,x,x,x,x,x,x,x,x,x,29,x,661,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,23")
+
+    (def times (filter number? (map read-string (str/split BUSES #","))))
+
+    (def nexttimes (zipmap times (map (fn [time]
+        (* time (+ 1 (unchecked-divide-int MINTIME time))))
+        times)))
+
+    (def closestbus (apply min-key nexttimes (keys nexttimes)))
+    (def closesttime (- (nexttimes closestbus) MINTIME))
+
+    (println closestbus closesttime (* closestbus closesttime))
