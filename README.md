@@ -12,7 +12,7 @@
 - Day 12: Lua
 - Day 13: Clojure
 - Day 14: Kotlin
-- Day 15:
+- Day 15: Ruby
 - Day 16:
 - Day 17:
 - Day 18:
