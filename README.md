@@ -13,7 +13,7 @@
 - Day 13: Clojure
 - Day 14: Kotlin
 - Day 15: Ruby
-- Day 16:
+- Day 16: Dart
 - Day 17:
 - Day 18:
 - Day 19:
