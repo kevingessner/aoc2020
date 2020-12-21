@@ -124,38 +124,6 @@ fn attempt<'a>(all_tiles: &HashMap<TileId, Tile>, unused_tile_nums: &HashSet<u16
     return allowed(all_tiles, unused_tile_nums, sq, assigned, Some(assigned[u - 1]), Some(assigned[u - sq]));
 }
 
-fn find_monsters(sq: usize, inner: &str) -> usize {
-    let monster = [
-        "                  # ",
-        "#    ##    ##    ###",
-        " #  #  #  #  #  #",
-    ];
-    let line_len = sq * 8 + 1;
-    let re0 = Regex::new(&monster[0].replace(" ", ".")).unwrap();
-    let re1 = Regex::new(&monster[1].replace(" ", ".")).unwrap();
-    let re2 = Regex::new(&monster[2].replace(" ", ".")).unwrap();
-    let inner_s = &inner;//.replace("\n", "");
-    let mc = re1.find_iter(&inner_s)
-        .filter(|m| re0.is_match_at(&inner_s, m.start() - line_len) && re2.is_match_at(&inner_s, m.start() + line_len))
-        .count();
-    let newm = monster[1].replace("#", "O").to_string();
-    if mc > 0 {
-        let replaced = re1.replace_all(&inner_s, |_: &regex::Captures| &newm)
-            .to_owned()
-            .chars()
-            .collect::<Vec<_>>()
-            .chunks(line_len)
-            .map(|c| c.iter().collect::<String>())
-            .collect::<Vec<String>>()
-            .as_slice()
-            .join("");
-        let nmc = inner_s.chars().filter(|c| *c == '#').count();
-        println!("{} monsters/{} = {}\n{}\n\n", mc, nmc, nmc - (mc * 15), replaced);
-    }
-    mc
-}
-
-
 fn main() {
     let mut rawtiles = Vec::<RawTile>::new();
     let stdin = io::stdin();
@@ -298,20 +266,8 @@ fn main() {
         if sols.len() > 0 {
             for sol in sols {
                 println!("allowed from {}\n{}\n", t.id, ids_to_grid(&sol, sq));
-                let mut inner_string = ids_to_inner(&tiles, &sol, sq);
-                println!("{}\n", inner_string);
-                for _ in 0..4 {
-                    find_monsters(sq, &inner_string);
-                    let lines = inner_string.lines().map(|l| l.to_string()).collect::<Vec<_>>();
-                    inner_string = rotate_right(&lines).as_slice().join("\n");
-                }
-                let lines = inner_string.lines().map(|l| l.to_string()).collect::<Vec<_>>();
-                inner_string = flip(&lines).as_slice().join("\n");
-                for _ in 0..4 {
-                    find_monsters(sq, &inner_string);
-                    let lines = inner_string.lines().map(|l| l.to_string()).collect::<Vec<_>>();
-                    inner_string = rotate_right(&lines).as_slice().join("\n");
-                }
+                let inner_string = ids_to_inner(&tiles, &sol, sq);
+                println!("{}\n\n", inner_string);
             }
         }
     }
