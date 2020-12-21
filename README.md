@@ -14,11 +14,11 @@
 - Day 14: Kotlin
 - Day 15: Ruby
 - Day 16: Dart
-- Day 17:
-- Day 18:
-- Day 19:
-- Day 20:
-- Day 21:
+- Day 17: C#
+- Day 18: Scala
+- Day 19: JavaScript
+- Day 20: Rust
+- Day 21: TypeScript
 - Day 22:
 - Day 23:
 - Day 24:
