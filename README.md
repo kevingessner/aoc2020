@@ -19,7 +19,7 @@
 - Day 19: JavaScript
 - Day 20: Rust
 - Day 21: TypeScript
-- Day 22:
+- Day 22: Swift
 - Day 23:
 - Day 24:
 - Day 25:
