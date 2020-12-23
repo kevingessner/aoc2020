@@ -20,6 +20,6 @@
 - Day 20: Rust
 - Day 21: TypeScript
 - Day 22: Swift
-- Day 23:
+- Day 23: F#
 - Day 24:
 - Day 25:
