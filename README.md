@@ -21,5 +21,5 @@
 - Day 21: TypeScript
 - Day 22: Swift
 - Day 23: F#
-- Day 24:
+- Day 24: Go
 - Day 25:
